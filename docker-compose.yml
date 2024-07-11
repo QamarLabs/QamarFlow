@@ -1,0 +1,38 @@
+version: '3.3'
+
+services:
+  fe:
+    container_name: qamarflow-front-end
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 3000:3000
+    volumes:
+      - ./:/usr/src/app/qamarflow
+      - /usr/src/app/qamarflow/node_modules
+      - /usr/src/app/qamarflow/.next
+      - /usr/src/app/qamarflow/.husky
+    env_file:
+      - .env.development
+    depends_on:
+      - mongodb
+    networks:
+      - qamarflow-app
+
+  mongodb:
+    container_name: qamarflow-mongo
+    image: mongo:4.4-bionic
+    volumes:
+      - qamarflow-db:/data/db
+    ports:
+      - 27017:27017
+    networks:
+      - qamarflow-app
+
+networks:
+  qamarflow-app:
+    driver: bridge
+
+volumes:
+  qamarflow-db:
