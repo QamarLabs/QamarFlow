@@ -8,3 +8,5 @@
 7. Client and server both on vitest 5; client on Vite 6.4.
 8. Docker/CI use Node 22: better-sqlite3 13 segfaults on Node 20.
 9. Round 4: user skipped the browser UI pass; chose Vite 6 only (no card_labels) and lint-staged.
+10. Round 5: UI pass done by the user by hand (Chrome extension not connected); PR #1 opened.
+11. Vercel hosts client/ only (client/vercel.json); /api is proxied by a rewrite to an external API host, because SQLite can't persist on Vercel. Actions: checkout v7, setup-node v7, CodeQL v4.

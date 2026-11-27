@@ -45,4 +45,4 @@ npm run dev:client      # :5173 (proxies /api)
 
 ## Next steps
 1. Visual UI pass in a browser (skipped by the user in round 4). Do it by hand, or connect the Claude in Chrome extension.
-2. Commit the work on a feature branch and open a PR to development.
+2. DONE: PR #1 (feature/ddd-vite-express-refactor -> development).
