@@ -1,33 +1,37 @@
-# This is a basic workflow to help you get started with Actions
-
 name: CI
 
-# Controls when the workflow will run
 on:
-  # Triggers the workflow on push or pull request events but only for the develop branch
   push:
-    branches: [develop]
+    branches: [development]
   pull_request:
-    branches: [develop]
-
-  # Allows you to run this workflow manually from the Actions tab
+    branches: [development]
   workflow_dispatch:
 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
-  # This workflow contains a single job called "build"
   build:
-    # The type of runner that the job will run on
     runs-on: ubuntu-latest
-
-    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v2
-
-      # Runs a single command using the runners shell
-      - name: Installing package
-        run: yarn install
-
-      - name: Running ESlint
-        run: yarn lint
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: |
+            server/package-lock.json
+            client/package-lock.json
+      - run: npm ci
+        working-directory: server
+      - run: npm ci
+        working-directory: client
+      - run: npm --prefix server run typecheck && npm --prefix client run typecheck
+      - run: npm --prefix server test
+      - run: npm --prefix client test
+      - run: npm --prefix server run build
+      - run: npm --prefix client run build
