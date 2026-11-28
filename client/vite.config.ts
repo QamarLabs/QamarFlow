@@ -22,7 +22,8 @@ export default defineConfig({
           if (/[\/](@chakra-ui|@emotion|framer-motion)[\/]/.test(id)) return 'ui';
           if (/[\/]@hello-pangea[\/]/.test(id)) return 'dnd';
           if (/[\/](react|react-dom|scheduler|react-router|react-router-dom|@remix-run|@reduxjs|react-redux|redux|immer|reselect)[\/]/.test(id)) return 'react-vendor';
-          return 'vendor';
+          // No catch-all "vendor" chunk: it created a vendor <-> react-vendor import cycle,
+          // so vendor ran before React initialised ("reading 'useLayoutEffect'" crash).
         }
       }
     }
