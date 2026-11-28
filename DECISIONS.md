@@ -10,3 +10,4 @@
 9. Round 4: user skipped the browser UI pass; chose Vite 6 only (no card_labels) and lint-staged.
 10. Round 5: UI pass done by the user by hand (Chrome extension not connected); PR #1 opened.
 11. Vercel hosts client/ only (root vercel.json; Vercel Root Directory must stay blank); /api is proxied by a rewrite to an external API host, because SQLite can't persist on Vercel. Actions: checkout v7, setup-node v7, CodeQL v4.
+12. Vite manualChunks: never add a catch-all 'vendor' chunk. It made a static vendor<->react-vendor cycle that crashed prod (useLayoutEffect of undefined). After changing chunks, check dist for static import cycles.
